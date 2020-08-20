@@ -43,6 +43,14 @@ export class AttributeStore {
     }
 
     /**
+     * Removes the given attribute
+     * @param attributeName - The name of the attribute
+     */
+    removeAttribute(attributeName: string): void {
+        this.attributes.delete(attributeName);
+    }
+
+    /**
      * Transforms the given attribute by applying
      * a callback function whose return value
      * is the new attribute value. The callback function
