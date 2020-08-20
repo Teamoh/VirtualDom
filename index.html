@@ -19,30 +19,17 @@
 		body {
 			height: 100%;
 		}
-		
-		body {
-			background-color: #222;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-
-		#welcome {
-			font-family: sans-serif;
-			font-size: 2em;
-			color: #eee;
-		}
 	</style>
 </head>
 <body>
-	<div id="welcome">
-		Welcome to ConstrictorJS!
-	</div>
-	<script src="src/constrictor.js"></script>
+	<script src="src/virtualdom.js"></script>
 	<script>
 		(function () {
-			const result = _(null).equals(null);
-			console.log(result);
+			const document = new VirtualDOM.VDocument();
+			const div = document.createElement('div');
+
+			console.log('Virtual document', document);
+			console.log('Virtual element', div);
 		})();
 	</script>
 </body>	
