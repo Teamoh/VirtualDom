@@ -1,4 +1,4 @@
-import { toString, isUndefined } from '../util/Util';
+import { isUndefined, toString } from '../util/Util';
 
 export class VClassList {
 
