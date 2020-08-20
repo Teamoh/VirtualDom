@@ -5,6 +5,7 @@ export class VHTMLElement {
 
     // #region Public Properties
 
+    tagName: string;
     classList: VClassList;
 
     // #region Id
@@ -29,7 +30,8 @@ export class VHTMLElement {
 
     // #region Constructor
 
-    constructor() {
+    constructor(tagName: string) {
+        this.tagName = tagName;
         this.classList = new VClassList();
         this.attributes = new AttributeStore();
     }
@@ -37,6 +39,42 @@ export class VHTMLElement {
     // #endregion
 
     // #region Public Methods
+
+    /**
+     * Sets an attribute
+     * @param attributeName - The name of the attribute
+     * @param attributeValue - The value of the attribute
+     */
+    setAttribute(attributeName: string, attributeValue: string): void {
+        this.attributes.setAttribute(attributeName, attributeValue);
+    }
+
+    /**
+     * Reads an attribute.
+     * If the attribute does not exist,
+     * null is returned.
+     * @param attributeName - The name of the attribute
+     */
+    getAttribute(attributeName: string): string {
+        return this.attributes.getAttribute(attributeName);
+    }
+
+    /**
+     * Checks if the given attribute
+     * is present
+     * @param attributeName - The name of the attribute
+     */
+    hasAttribute(attributeName: string): boolean {
+        return this.attributes.hasAttribute(attributeName);
+    }
+
+    /**
+     * Removes the given attribute
+     * @param attributeName - The name of the attribute
+     */
+    removeAttribute(attributeName: string): void {
+        this.attributes.removeAttribute(attributeName);
+    }
 
     // #endregion
 
