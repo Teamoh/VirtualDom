@@ -7,6 +7,7 @@ export class VHTMLElement {
 
     tagName: string;
     classList: VClassList;
+    children: Array<VHTMLElement>;
 
     // #region Id
 
@@ -34,6 +35,7 @@ export class VHTMLElement {
         this.tagName = tagName;
         this.classList = new VClassList();
         this.attributes = new AttributeStore();
+        this.children = [];
     }
 
     // #endregion
@@ -74,6 +76,10 @@ export class VHTMLElement {
      */
     removeAttribute(attributeName: string): void {
         this.attributes.removeAttribute(attributeName);
+    }
+
+    appendChild(vElement: VHTMLElement) {
+        this.children.push(vElement);
     }
 
     // #endregion
