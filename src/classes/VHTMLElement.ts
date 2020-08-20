@@ -1,15 +1,13 @@
-import { toString } from '../util/Util';
-import { VAttributes } from './VAttributes';
+import { AttributeStore } from './AttributeStore';
+import { VClassList } from './VClassList';
 
 export class VHTMLElement {
 
-    // #region Private Properties
-
-    private attributes = new VAttributes();
-
-    // #endregion
-
     // #region Public Properties
+
+    classList: VClassList;
+
+    // #region Id
 
     get id(): string {
         return this.attributes.getAttribute('id');
@@ -20,5 +18,29 @@ export class VHTMLElement {
     }
 
     // #endregion
-    
+
+    // #endregion
+
+    // #region Private Properties
+
+    private attributes: AttributeStore;
+
+    // #endregion
+
+    // #region Constructor
+
+    constructor() {
+        this.classList = new VClassList();
+        this.attributes = new AttributeStore();
+    }
+
+    // #endregion
+
+    // #region Public Methods
+
+    // #endregion
+
+    // #region Private Methods
+
+    // #endregion
 }
