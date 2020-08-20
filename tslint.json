@@ -1,0 +1,33 @@
+{
+    "extends": "tslint:recommended",
+    "rules": {
+        "quotemark": [
+            true,
+            "single"
+        ],
+        "array-type": [
+            true,
+            "generic"
+        ],
+        "arrow-parens": [
+            true,
+            "ban-single-arg-parens"
+        ],
+        "member-access": [
+            true,
+            "no-public"
+        ],
+        "space-before-function-paren": [
+            true,
+            {
+                "anonymous": "always",
+                "named": "never",
+                "asyncArrow": "always"
+            }
+        ],
+        "variable-name": [
+            true,
+            "allow-leading-underscore"
+        ]
+    }
+}

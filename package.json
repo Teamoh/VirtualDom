@@ -1,0 +1,30 @@
+{
+  "name": "constrictor-js",
+  "version": "0.0.1",
+  "description": "Library to wrap everything!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Teamoh/ConstrictorJS.git"
+  },
+  "author": "Teamoh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Teamoh/ConstrictorJS/issues"
+  },
+  "homepage": "https://github.com/Teamoh/ConstrictorJS#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-better-rollup": "^4.0.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
+    "rollup": "^1.27.14",
+    "rollup-plugin-typescript2": "^0.25.3",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4"
+  }
+}
