@@ -1,6 +1,7 @@
 import { toString } from '../util/Util';
 
-export class VAttributes {
+export class AttributeStore {
+
     // #region Private Properties
 
     private attributes = new Map<string, string>();
