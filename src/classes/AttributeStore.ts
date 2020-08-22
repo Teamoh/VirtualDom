@@ -2,17 +2,17 @@ import { toString } from '../util/Util';
 
 export default class AttributeStore {
 
-    // #region Private Properties
+    //#region Private Properties
 
     private attributes = new Map<string, string>();
 
-    // #endregion
+    //#endregion
 
-    // #region Public Properties
+    //#region Public Properties
 
-    // #endregion
+    //#endregion
 
-    // #region Public Methods
+    //#region Public Methods
 
     /**
      * Sets an attribute
@@ -66,5 +66,5 @@ export default class AttributeStore {
         return newAttributeValue;
     }
 
-    // #endregion
+    //#endregion
 }

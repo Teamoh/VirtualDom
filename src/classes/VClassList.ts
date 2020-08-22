@@ -2,21 +2,21 @@ import { isUndefined, toString } from '../util/Util';
 
 export default class VClassList {
 
-    // #region Public Properties
+    //#region Public Properties
 
-    // #endregion
+    //#endregion
 
-    // #region Private Properties
+    //#region Private Properties
 
     private classNames = new Set<string>();
 
-    // #endregion
+    //#endregion
 
-    // #region Constructor
+    //#region Constructor
 
-    // #endregion
+    //#endregion
 
-    // #region Public Methods
+    //#region Public Methods
 
     /**
      * Adds the specified class names to the class list
@@ -67,10 +67,10 @@ export default class VClassList {
         }
     }
 
-    // #endregion
+    //#endregion
 
-    // #region Private Methods
+    //#region Private Methods
 
-    // #endregion
+    //#endregion
 
 }

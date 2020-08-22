@@ -3,21 +3,21 @@ import VHTMLElement from './VHTMLElement';
 
 export default class VDocument {
 
-    // #region Public Properties
+    //#region Public Properties
 
     children: Array<VHTMLElement>;
 
-    // #endregion
+    //#endregion
 
-    // #region Constructor
+    //#region Constructor
 
     constructor() {
         this.children = [];
     }
 
-    // #endregion
+    //#endregion
 
-    // #region Public Methods
+    //#region Public Methods
 
     createElement(elementName: string): VHTMLElement {
         if (!isString(elementName)) {
@@ -31,6 +31,6 @@ export default class VDocument {
         this.children.push(vElement);
     }
 
-    // #endregion
+    //#endregion
 
 }

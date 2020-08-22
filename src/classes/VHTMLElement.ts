@@ -3,13 +3,13 @@ import VClassList from './VClassList';
 
 export default class VHTMLElement {
 
-    // #region Public Properties
+    //#region Public Properties
 
     tagName: string;
     classList: VClassList;
     children: Array<VHTMLElement>;
 
-    // #region Id
+    //#region Id
 
     get id(): string {
         return this.attributes.getAttribute('id');
@@ -19,17 +19,17 @@ export default class VHTMLElement {
         this.attributes.setAttribute('id', id);
     }
 
-    // #endregion
+    //#endregion
 
-    // #endregion
+    //#endregion
 
-    // #region Private Properties
+    //#region Private Properties
 
     private attributes: AttributeStore;
 
-    // #endregion
+    //#endregion
 
-    // #region Constructor
+    //#region Constructor
 
     constructor(tagName: string) {
         this.tagName = tagName;
@@ -38,9 +38,9 @@ export default class VHTMLElement {
         this.children = [];
     }
 
-    // #endregion
+    //#endregion
 
-    // #region Public Methods
+    //#region Public Methods
 
     /**
      * Sets an attribute
@@ -82,9 +82,9 @@ export default class VHTMLElement {
         this.children.push(vElement);
     }
 
-    // #endregion
+    //#endregion
 
-    // #region Private Methods
+    //#region Private Methods
 
-    // #endregion
+    //#endregion
 }
