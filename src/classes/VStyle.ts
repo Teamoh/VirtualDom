@@ -1,3 +1,3 @@
-export class VStyle {
+export default class VStyle {
 
 }

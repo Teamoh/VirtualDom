@@ -1,7 +1,7 @@
-import { AttributeStore } from './AttributeStore';
-import { VClassList } from './VClassList';
+import AttributeStore from './AttributeStore';
+import VClassList from './VClassList';
 
-export class VHTMLElement {
+export default class VHTMLElement {
 
     // #region Public Properties
 

@@ -1,7 +1,7 @@
 import { isString } from '../util/Util';
-import { VHTMLElement } from './VHTMLElement';
+import VHTMLElement from './VHTMLElement';
 
-export class VDocument {
+export default class VDocument {
 
     // #region Public Properties
 

@@ -1,6 +1,6 @@
 import { isUndefined, toString } from '../util/Util';
 
-export class VClassList {
+export default class VClassList {
 
     // #region Public Properties
 

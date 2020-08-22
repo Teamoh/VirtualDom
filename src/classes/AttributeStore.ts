@@ -1,6 +1,6 @@
 import { toString } from '../util/Util';
 
-export class AttributeStore {
+export default class AttributeStore {
 
     // #region Private Properties
 
