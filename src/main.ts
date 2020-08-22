@@ -1,4 +1,4 @@
-import { VDocument } from './classes/VDocument';
+import VDocument from './classes/VDocument';
 
 (window as any).VirtualDOM = {
     VDocument,
