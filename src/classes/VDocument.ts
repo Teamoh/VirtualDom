@@ -1,17 +1,17 @@
 import { isString } from '../util/Util';
 import VHTMLElement from './VHTMLElement';
+import VNode from './VNode';
 
-export default class VDocument {
+export default class VDocument extends VNode {
 
     //#region Public Properties
-
-    children: Array<VHTMLElement>;
-
     //#endregion
 
     //#region Constructor
 
     constructor() {
+        super();
+
         this.children = [];
     }
 
@@ -25,10 +25,6 @@ export default class VDocument {
         }
 
         return new VHTMLElement(elementName);
-    }
-
-    appendChild(vElement: VHTMLElement) {
-        this.children.push(vElement);
     }
 
     //#endregion

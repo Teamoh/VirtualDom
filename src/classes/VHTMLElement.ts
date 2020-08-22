@@ -1,13 +1,13 @@
 import AttributeStore from './AttributeStore';
 import VClassList from './VClassList';
+import VNode from './VNode';
 
-export default class VHTMLElement {
+export default class VHTMLElement extends VNode {
 
     //#region Public Properties
 
     tagName: string;
     classList: VClassList;
-    children: Array<VHTMLElement>;
 
     //#region Id
 
@@ -32,6 +32,8 @@ export default class VHTMLElement {
     //#region Constructor
 
     constructor(tagName: string) {
+        super();
+
         this.tagName = tagName;
         this.classList = new VClassList();
         this.attributes = new AttributeStore();
@@ -76,10 +78,6 @@ export default class VHTMLElement {
      */
     removeAttribute(attributeName: string): void {
         this.attributes.removeAttribute(attributeName);
-    }
-
-    appendChild(vElement: VHTMLElement) {
-        this.children.push(vElement);
     }
 
     //#endregion
