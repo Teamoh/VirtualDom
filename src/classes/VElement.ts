@@ -2,7 +2,7 @@ import AttributeStore from './AttributeStore';
 import VClassList from './VClassList';
 import VNode from './VNode';
 
-export default class VHTMLElement extends VNode {
+export default class VElement extends VNode {
 
     //#region Public Properties
 

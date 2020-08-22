@@ -1,5 +1,5 @@
 import { isString } from '../util/Util';
-import VHTMLElement from './VHTMLElement';
+import VElement from './VElement';
 import VNode from './VNode';
 
 export default class VDocument extends VNode {
@@ -19,12 +19,12 @@ export default class VDocument extends VNode {
 
     //#region Public Methods
 
-    createElement(elementName: string): VHTMLElement {
+    createElement(elementName: string): VElement {
         if (!isString(elementName)) {
             throw new TypeError('elementName must be a string');
         }
 
-        return new VHTMLElement(elementName);
+        return new VElement(elementName);
     }
 
     //#endregion
