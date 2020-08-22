@@ -1,6 +1,7 @@
 import AttributeStore from './AttributeStore';
 import VClassList from './VClassList';
 import VNode from './VNode';
+import VStyle from './VStyle';
 
 export default class VElement extends VNode {
 
@@ -8,6 +9,7 @@ export default class VElement extends VNode {
 
     tagName: string;
     classList: VClassList;
+    style: VStyle;
 
     //#region Id
 
