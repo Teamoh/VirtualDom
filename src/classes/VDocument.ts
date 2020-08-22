@@ -11,8 +11,6 @@ export default class VDocument extends VNode {
 
     constructor() {
         super();
-
-        this.children = [];
     }
 
     //#endregion

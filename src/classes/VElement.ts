@@ -36,8 +36,8 @@ export default class VElement extends VNode {
 
         this.tagName = tagName;
         this.classList = new VClassList();
+        this.style = new VStyle();
         this.attributes = new AttributeStore();
-        this.children = [];
     }
 
     //#endregion
