@@ -1,3 +1,4 @@
+import { escapeAttributeValue } from '../util/Util';
 import AttributeStore from './AttributeStore';
 import VClassList from './VClassList';
 import VNode from './VNode';
@@ -21,6 +22,22 @@ export default class VElement extends VNode {
         this.attributes.setAttribute('id', id);
     }
 
+    get innerHTML(): string {
+        return this.stringifyChildren();
+    }
+
+    get textContent(): string {
+        return this._textContent;
+    }
+
+    set textContent(textContent: string) {
+        this.children.forEach((childNode: VNode) => {
+            this.removeChild(childNode);
+        });
+
+        this._textContent = textContent;
+    }
+
     //#endregion
 
     //#endregion
@@ -28,6 +45,7 @@ export default class VElement extends VNode {
     //#region Private Properties
 
     private attributes: AttributeStore;
+    private _textContent: string;
 
     //#endregion
 
@@ -82,9 +100,34 @@ export default class VElement extends VNode {
         this.attributes.removeAttribute(attributeName);
     }
 
+    toString() {
+        return `<${this.tagName}${this.stringifyAttributes()}>${this._textContent ? this._textContent : this.stringifyChildren()}</${this.tagName}>`;
+    }
+
     //#endregion
 
     //#region Private Methods
+
+    private stringifyAttributes() {
+        const attributeList = [];
+
+        this.attributes.foreach((attributeName: string, attributeValue: string) => {
+            const escapedAttributeValue = escapeAttributeValue(attributeValue);
+            attributeList.push(`${attributeName}="${escapedAttributeValue}"`);
+        });
+
+        return attributeList.length ? (' ' + attributeList.join(' ')) : '';
+    }
+
+    private stringifyChildren() {
+        const stringifiedChildren = [];
+
+        this.children.forEach((node: VNode) => {
+            stringifiedChildren.push(node.toString());
+        });
+
+        return stringifiedChildren.join('');
+    }
 
     //#endregion
 }
