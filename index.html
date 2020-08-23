@@ -25,16 +25,24 @@
 	<script src="src/virtualdom.js"></script>
 	<script>
 		(function () {
-			const document = new VirtualDOM.VDocument();
-			const div = document.createElement('div');
+			const doc = new VirtualDOM.VDocument();
+			const div = doc.createElement('div');
 
-			document.appendChild(div);
+			div.setAttribute('test', '123');
+			doc.appendChild(div);
+	
+			const span = doc.createElement('span');
+			span.textContent = '123';
+			div.appendChild(span);
 
-			console.log('Virtual document', document);
-			console.log('Virtual element', div);
+			console.log('doc', doc);
+			console.log('div', div);
+			console.log('span', span);
+			console.log(div.toString());
 
-			window.doc = document;
-			window.el = div;
+			window.doc = doc;
+			window.div = div;
+			window.span = span;
 		})();
 	</script>
 </body>	
