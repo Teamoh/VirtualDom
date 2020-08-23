@@ -1,8 +1,10 @@
+import { isVoidElement } from '../elements/VoidElements';
 import { escapeAttributeValue } from '../util/Util';
 import AttributeStore from './AttributeStore';
 import VClassList from './VClassList';
 import VNode from './VNode';
 import VStyle from './VStyle';
+import VTextNode from './VTextNode';
 
 export default class VElement extends VNode {
 
@@ -35,7 +37,7 @@ export default class VElement extends VNode {
             this.removeChild(childNode);
         });
 
-        this._textContent = textContent;
+        this.appendChild(new VTextNode(textContent));
     }
 
     //#endregion
