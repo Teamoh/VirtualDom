@@ -23,7 +23,7 @@ export default class VDocument extends VNode {
      * @param elementName - The name of the element
      */
     createElement(elementName: string): VElement {
-        if (!isString(elementName)) {
+        if (!elementName || !isString(elementName)) {
             throw new TypeError('elementName must be a string');
         }
 
