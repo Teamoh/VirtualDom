@@ -9,3 +9,7 @@ export function isString(x: any) {
 export function isUndefined(x: any) {
     return x === undefined;
 }
+
+export function escapeAttributeValue(attributeValue: string) {
+    return attributeValue.replace(/"/g, '&quot;');
+}
