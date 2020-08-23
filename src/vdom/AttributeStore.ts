@@ -66,5 +66,11 @@ export default class AttributeStore {
         return newAttributeValue;
     }
 
+    foreach(callback: (attributeName: string, attributeValue: string) => void) {
+        this.attributes.forEach((value: string, key: string) => {
+            callback.call(key, key, value);
+        });
+    }
+
     //#endregion
 }
