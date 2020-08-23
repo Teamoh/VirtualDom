@@ -1,7 +1,8 @@
 import { isVoidElement } from '../elements/VoidElements';
-import { escapeAttributeValue } from '../util/Util';
+import { camelCase, escapeAttributeValue, startsWith } from '../util/Util';
 import AttributeStore from './AttributeStore';
 import VClassList from './VClassList';
+import VDataSet from './VDataSet';
 import VNode from './VNode';
 import VStyle from './VStyle';
 import VTextNode from './VTextNode';
@@ -12,6 +13,7 @@ export default class VElement extends VNode {
 
     tagName: string;
     classList: VClassList;
+    dataset: VDataSet;
     style: VStyle;
 
     //#region Id
@@ -58,8 +60,9 @@ export default class VElement extends VNode {
 
         this.tagName = tagName;
         this.classList = new VClassList();
-        this.style = new VStyle();
         this.attributes = new AttributeStore();
+        this.dataset = new VDataSet();
+        this.style = new VStyle();
     }
 
     //#endregion
@@ -72,6 +75,17 @@ export default class VElement extends VNode {
      * @param attributeValue - The value of the attribute
      */
     setAttribute(attributeName: string, attributeValue: string): void {
+        const dataAttributePrefix = 'data-';
+
+        if (startsWith(attributeName, dataAttributePrefix)) {
+            // if the attribute is a data-attribute
+            // add it to the dataset object with the camelcased
+            // name
+            const dataAttributeName = attributeName.slice(dataAttributePrefix.length);
+            const camelCasedDataAttributeName = camelCase(dataAttributeName);
+            this.dataset[camelCasedDataAttributeName] = attributeValue;
+        }
+
         this.attributes.setAttribute(attributeName, attributeValue);
     }
 

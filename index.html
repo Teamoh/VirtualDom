@@ -29,16 +29,21 @@
 			const div = doc.createElement('div');
 
 			div.setAttribute('test', '123');
+			div.setAttribute('data-url', 'http://www.google.de');
 			doc.appendChild(div);
 	
 			const span = doc.createElement('span');
 			span.textContent = '123';
 			div.appendChild(span);
 
+			const br = doc.createElement('br');
+			span.appendChild(br);
+
 			console.log('doc', doc);
 			console.log('div', div);
 			console.log('span', span);
-			console.log(div.toString());
+			console.log('br', br);
+			console.log(doc.toString());
 
 			window.doc = doc;
 			window.div = div;
