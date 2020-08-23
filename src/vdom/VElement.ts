@@ -101,7 +101,13 @@ export default class VElement extends VNode {
     }
 
     toString() {
-        return `<${this.tagName}${this.stringifyAttributes()}>${this._textContent ? this._textContent : this.stringifyChildren()}</${this.tagName}>`;
+        let html = `<${this.tagName}${this.stringifyAttributes()}>`;
+
+        if (!isVoidElement(this.tagName)) {
+            html += `${this._textContent ? this._textContent : this.stringifyChildren()}</${this.tagName}>`;
+        }
+
+        return html;
     }
 
     //#endregion
