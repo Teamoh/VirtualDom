@@ -30,6 +30,10 @@ export default class VElement extends VNode {
         return this.stringifyChildren();
     }
 
+    get outerHTML(): string {
+        return this.toString();
+    }
+
     get textContent(): string {
         return this._textContent;
     }
