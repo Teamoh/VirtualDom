@@ -1,5 +1,5 @@
 import { voidElementNames } from '../config/config';
-import { camelCase, escapeAttributeValue, startsWith } from '../util/Util';
+import { camelCase, escapeAttributeValue, startsWith, unCamelCase } from '../util/Util';
 import AttributeStore from './AttributeStore';
 import VClassList from './VClassList';
 import VDataSet from './VDataSet';
@@ -150,14 +150,32 @@ export default class VElement extends VNode {
      * as a string
      */
     private stringifyAttributes(): string {
-        const attributeList = [];
+        const attributeMap = new Map<string, string>();
 
-        this.attributes.foreach((attributeName: string, attributeValue: string) => {
-            const escapedAttributeValue = escapeAttributeValue(attributeValue);
-            attributeList.push(`${attributeName}="${escapedAttributeValue}"`);
+        this.attributes.forEach((attributeName: string, attributeValue: string) => {
+            attributeMap.set(attributeName, attributeValue);
         });
 
-        return attributeList.length ? (' ' + attributeList.join(' ')) : '';
+        /**
+         * Override the normal attributes with the data attributes.
+         * Because the data attributes are stored within a loose object
+         * they should take priority over the normal attributes
+         * which are controlled by methods which will always synchronize
+         * the dataset.
+         */
+        this.dataset.forEach((dataAttributeName: string, dataAttributeValue: string) => {
+            // un-camelcase the property name
+            const unCamelCasedName = unCamelCase(dataAttributeName);
+            attributeMap.set(unCamelCasedName, dataAttributeValue);
+        });
+
+        const attributesList = [];
+
+        attributeMap.forEach((attributeValue: string, attributeName: string) => {
+            const escapedAttributeValue = escapeAttributeValue(attributeValue);
+            attributesList.push(`${attributeName}="${escapedAttributeValue}"`);
+        });
+        return attributesList.length ? (' ' + attributesList.join(' ')) : '';
     }
 
     /**
