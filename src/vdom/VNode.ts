@@ -5,19 +5,19 @@ export default class VNode {
     //#region Public Properties
 
     parentNode: VNode;
-    children: Array<VNode>;
+    childNodes: Array<VNode>;
 
     get firstChild(): VNode | null {
-        return this.children[0] || null;
+        return this.childNodes[0] || null;
     }
 
     get lastChild(): VNode | null {
-        return this.children[this.children.length - 1] || null;
+        return this.childNodes[this.childNodes.length - 1] || null;
     }
 
     get firstElementChild(): VNode | null {
-        for (let i = 0, iLen = this.children.length; i < iLen; i++) {
-            const currentChild = this.children[i];
+        for (let i = 0, iLen = this.childNodes.length; i < iLen; i++) {
+            const currentChild = this.childNodes[i];
 
             if (currentChild instanceof VElement) {
                 return currentChild;
@@ -28,8 +28,8 @@ export default class VNode {
     }
 
     get lastElementChild(): VNode | null {
-        for (let i = this.children.length - 1; i > -1; i--) {
-            const currentChild = this.children[i];
+        for (let i = this.childNodes.length - 1; i > -1; i--) {
+            const currentChild = this.childNodes[i];
 
             if (currentChild instanceof VElement) {
                 return currentChild;
@@ -45,7 +45,7 @@ export default class VNode {
 
     constructor() {
         this.parentNode = null;
-        this.children = [];
+        this.childNodes = [];
     }
 
     //#endregion
@@ -54,17 +54,17 @@ export default class VNode {
 
     appendChild(node: VNode): void {
         this.setParentNodeToThisNode(node);
-        this.children.push(node);
+        this.childNodes.push(node);
     }
 
     removeChild(childNode: VNode): void {
-        const index = this.children.indexOf(childNode);
+        const index = this.childNodes.indexOf(childNode);
 
         if (index === -1) {
             return;
         }
 
-        this.children.splice(index, 1);
+        this.childNodes.splice(index, 1);
     }
 
     insertBefore(newNode: VNode, referenceNode: VNode): void {
@@ -72,14 +72,14 @@ export default class VNode {
             return this.appendChild(newNode);
         }
 
-        const referenceNodeIndex = this.children.indexOf(referenceNode);
+        const referenceNodeIndex = this.childNodes.indexOf(referenceNode);
 
         if (referenceNodeIndex === -1) {
             return;
         }
 
         this.setParentNodeToThisNode(newNode);
-        this.children.splice(referenceNodeIndex - 1, 0, newNode);
+        this.childNodes.splice(referenceNodeIndex - 1, 0, newNode);
     }
 
     //#endregion

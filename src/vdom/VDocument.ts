@@ -33,7 +33,7 @@ export default class VDocument extends VNode {
     toString(): string {
         let resultHtml = '';
 
-        this.children.forEach((childNode: VNode) => {
+        this.childNodes.forEach((childNode: VNode) => {
             resultHtml += childNode.toString();
         });
 
@@ -47,11 +47,11 @@ export default class VDocument extends VNode {
     private iterateTreeRecursively(rootNode: VNode, callback: (node: VNode) => void) {
         callback.call(this, rootNode);
 
-        if (!rootNode.children.length) {
+        if (!rootNode.childNodes.length) {
             return;
         }
 
-        rootNode.children.forEach((childNode: VNode) => {
+        rootNode.childNodes.forEach((childNode: VNode) => {
             callback.call(this, childNode);
             this.iterateTreeRecursively(childNode, callback);
         });

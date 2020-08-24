@@ -39,7 +39,7 @@ export default class VElement extends VNode {
     }
 
     set textContent(textContent: string) {
-        this.children.forEach((childNode: VNode) => {
+        this.childNodes.forEach((childNode: VNode) => {
             this.removeChild(childNode);
         });
 
@@ -259,7 +259,7 @@ export default class VElement extends VNode {
     private stringifyChildren(): string {
         const stringifiedChildren = [];
 
-        this.children.forEach((node: VNode) => {
+        this.childNodes.forEach((node: VNode) => {
             stringifiedChildren.push(node.toString());
         });
 
