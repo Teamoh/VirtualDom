@@ -1,4 +1,4 @@
-import { toString } from '../util/Util';
+import { isFunction, toString } from '../util/Util';
 
 export default class AttributeStore {
 
@@ -66,7 +66,16 @@ export default class AttributeStore {
         return newAttributeValue;
     }
 
-    foreach(callback: (attributeName: string, attributeValue: string) => void) {
+    /**
+     * Executes the given callback
+     * for each attribute
+     * @param callback - The callback function to execute
+     */
+    forEach(callback: (attributeName: string, attributeValue: string) => void): void {
+        if (!isFunction(callback)) {
+            throw new TypeError('callback must be a function');
+        }
+
         this.attributes.forEach((value: string, key: string) => {
             callback.call(key, key, value);
         });
