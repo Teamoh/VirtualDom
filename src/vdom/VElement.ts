@@ -141,7 +141,11 @@ export default class VElement extends VNode {
 
     //#region Private Methods
 
-    private stringifyAttributes() {
+    /**
+     * Returns the elements attributes
+     * as a string
+     */
+    private stringifyAttributes(): string {
         const attributeList = [];
 
         this.attributes.foreach((attributeName: string, attributeValue: string) => {
@@ -152,7 +156,11 @@ export default class VElement extends VNode {
         return attributeList.length ? (' ' + attributeList.join(' ')) : '';
     }
 
-    private stringifyChildren() {
+    /**
+     * Returns the elements children
+     * as a string
+     */
+    private stringifyChildren(): string {
         const stringifiedChildren = [];
 
         this.children.forEach((node: VNode) => {
