@@ -7,6 +7,10 @@ export default class VNode {
     parentNode: VNode;
     childNodes: Array<VNode>;
 
+    get children(): Array<VElement> {
+        return this.childNodes.filter(node => node instanceof VElement) as Array<VElement>;
+    }
+
     get firstChild(): VNode | null {
         return this.childNodes[0] || null;
     }
