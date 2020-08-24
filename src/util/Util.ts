@@ -10,6 +10,10 @@ export function isUndefined(x: any) {
     return x === undefined;
 }
 
+export function isFunction(x: any) {
+    return typeof x === 'function';
+}
+
 export function escapeAttributeValue(attributeValue: string) {
     return attributeValue.replace(/"/g, '&quot;');
 }
