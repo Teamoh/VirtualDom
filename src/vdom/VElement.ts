@@ -1,4 +1,4 @@
-import { isVoidElement } from '../elements/VoidElements';
+import { voidElementNames } from '../config/config';
 import { camelCase, escapeAttributeValue, startsWith } from '../util/Util';
 import AttributeStore from './AttributeStore';
 import VClassList from './VClassList';
@@ -116,14 +116,25 @@ export default class VElement extends VNode {
         this.attributes.removeAttribute(attributeName);
     }
 
-    toString() {
+    /**
+     * Renders the element and its children as HTML
+     */
+    toString(): string {
         let html = `<${this.tagName}${this.stringifyAttributes()}>`;
 
-        if (!isVoidElement(this.tagName)) {
+        if (!this.isVoidElement()) {
             html += `${this._textContent ? this._textContent : this.stringifyChildren()}</${this.tagName}>`;
         }
 
         return html;
+    }
+
+    /**
+     * Checks if the element is a void element
+     * (self closing element)
+     */
+    isVoidElement(): boolean {
+        return voidElementNames.indexOf(this.tagName) !== -1;
     }
 
     //#endregion

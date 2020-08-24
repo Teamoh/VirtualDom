@@ -14,7 +14,3 @@ export const voidElementNames = [
     'track',
     'wbr',
 ];
-
-export function isVoidElement(elementName: string) {
-    return voidElementNames.indexOf(elementName) !== -1;
-}
