@@ -1,5 +1,5 @@
-import { voidElementNames, dataAttributePrefix } from '../config/config';
-import { camelCase, escapeAttributeValue, startsWith, unCamelCase, isUndefined } from '../util/Util';
+import { dataAttributePrefix, voidElementNames } from '../config/config';
+import { camelCase, escapeAttributeValue, isUndefined, startsWith, unCamelCase } from '../util/Util';
 import AttributeStore from './AttributeStore';
 import VClassList from './VClassList';
 import VDataSet from './VDataSet';
