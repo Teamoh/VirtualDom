@@ -1,5 +1,5 @@
-import { voidElementNames } from '../config/config';
-import { camelCase, escapeAttributeValue, startsWith, unCamelCase } from '../util/Util';
+import { voidElementNames, dataAttributePrefix } from '../config/config';
+import { camelCase, escapeAttributeValue, startsWith, unCamelCase, isUndefined } from '../util/Util';
 import AttributeStore from './AttributeStore';
 import VClassList from './VClassList';
 import VDataSet from './VDataSet';
@@ -79,17 +79,7 @@ export default class VElement extends VNode {
      * @param attributeValue - The value of the attribute
      */
     setAttribute(attributeName: string, attributeValue: string): void {
-        const dataAttributePrefix = 'data-';
-
-        if (startsWith(attributeName, dataAttributePrefix)) {
-            // if the attribute is a data-attribute
-            // add it to the dataset object with the camelcased
-            // name
-            const dataAttributeName = attributeName.slice(dataAttributePrefix.length);
-            const camelCasedDataAttributeName = camelCase(dataAttributeName);
-            this.dataset[camelCasedDataAttributeName] = attributeValue;
-        }
-
+        this.addDatasetProperty(attributeName, attributeValue);
         this.attributes.setAttribute(attributeName, attributeValue);
     }
 
@@ -100,6 +90,12 @@ export default class VElement extends VNode {
      * @param attributeName - The name of the attribute
      */
     getAttribute(attributeName: string): string {
+        const dataAttributeValue = this.getDatasetProperty(attributeName);
+
+        if (!isUndefined(dataAttributeValue)) {
+            return dataAttributeValue;
+        }
+
         return this.attributes.getAttribute(attributeName);
     }
 
@@ -109,6 +105,12 @@ export default class VElement extends VNode {
      * @param attributeName - The name of the attribute
      */
     hasAttribute(attributeName: string): boolean {
+        const hasDataAttribute = this.hasDatasetProperty(attributeName);
+
+        if (hasDataAttribute) {
+            return true;
+        }
+
         return this.attributes.hasAttribute(attributeName);
     }
 
@@ -117,6 +119,7 @@ export default class VElement extends VNode {
      * @param attributeName - The name of the attribute
      */
     removeAttribute(attributeName: string): void {
+        this.removeDatasetProperty(attributeName);
         this.attributes.removeAttribute(attributeName);
     }
 
@@ -145,6 +148,75 @@ export default class VElement extends VNode {
 
     //#region Private Methods
 
+    private addDatasetProperty(attributeName: string, attributeValue: string): void {
+        if (!this.isDataAttributeName(attributeName)) {
+            return;
+        }
+
+        // if the attribute is a data-attribute
+        // add it to the dataset with
+        // the camelcased name
+        const datasetPropertyName = this.createDatasetPropertyNameFromAttributeName(attributeName);
+        this.dataset[datasetPropertyName] = attributeValue;
+    }
+
+    private getDatasetProperty(attributeName: string): string {
+        if (!this.isDataAttributeName(attributeName)) {
+            return;
+        }
+
+        // if the attribute is a data-attribute
+        // read it from the dataset with
+        // the camelcased property name
+        const datasetPropertyName = this.createDatasetPropertyNameFromAttributeName(attributeName);
+        return this.dataset[datasetPropertyName];
+    }
+
+    private hasDatasetProperty(attributeName: string): boolean {
+        if (!this.isDataAttributeName(attributeName)) {
+            return false;
+        }
+
+        const datasetPropertyName = this.createDatasetPropertyNameFromAttributeName(attributeName);
+        return this.dataset.hasOwnProperty(datasetPropertyName);
+    }
+
+    private removeDatasetProperty(attributeName: string): void {
+        if (!this.isDataAttributeName(attributeName) || !this.hasDatasetProperty(attributeName)) {
+            return;
+        }
+
+        const datasetPropertyName = this.createDatasetPropertyNameFromAttributeName(attributeName);
+        delete this.dataset[datasetPropertyName];
+    }
+
+    /**
+     * Takes an attribute name and converts it
+     * to a camelcased property name which may
+     * be used inside the dataset
+     * @param attributeName - The attribute name
+     */
+    private createDatasetPropertyNameFromAttributeName(attributeName: string): string {
+        let datasetPropertyName = attributeName;
+
+        if (this.isDataAttributeName(datasetPropertyName)) {
+            // if the given attribute name is a data attribute
+            // cut off the prefix
+            datasetPropertyName = attributeName.slice(dataAttributePrefix.length);
+        }
+
+        return camelCase(datasetPropertyName);
+    }
+
+    /**
+     * Checks if the given attributeName
+     * starts with 'data-'
+     * @param attributeName - The attribute name to check
+     */
+    private isDataAttributeName(attributeName: string): boolean {
+        return startsWith(attributeName, dataAttributePrefix);
+    }
+
     /**
      * Returns the elements attributes
      * as a string
@@ -166,7 +238,8 @@ export default class VElement extends VNode {
         this.dataset.forEach((dataAttributeName: string, dataAttributeValue: string) => {
             // un-camelcase the property name
             const unCamelCasedName = unCamelCase(dataAttributeName);
-            attributeMap.set(unCamelCasedName, dataAttributeValue);
+            const prefixedName = dataAttributePrefix + unCamelCasedName;
+            attributeMap.set(prefixedName, dataAttributeValue);
         });
 
         const attributesList = [];
@@ -175,6 +248,7 @@ export default class VElement extends VNode {
             const escapedAttributeValue = escapeAttributeValue(attributeValue);
             attributesList.push(`${attributeName}="${escapedAttributeValue}"`);
         });
+
         return attributesList.length ? (' ' + attributesList.join(' ')) : '';
     }
 

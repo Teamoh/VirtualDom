@@ -1,14 +1,12 @@
 import { isFunction, toString } from '../util/Util';
+import VDataSet from './VDataSet';
 
 export default class AttributeStore {
 
     //#region Private Properties
 
     private attributes = new Map<string, string>();
-
-    //#endregion
-
-    //#region Public Properties
+    private dataset: VDataSet;
 
     //#endregion
 

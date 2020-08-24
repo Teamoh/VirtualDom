@@ -14,3 +14,5 @@ export const voidElementNames = [
     'track',
     'wbr',
 ];
+
+export const dataAttributePrefix = 'data-';
