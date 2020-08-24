@@ -124,7 +124,7 @@ export default class VElement extends VNode {
      * Renders the element and its children as HTML
      */
     toString(): string {
-        let html = `<${this.tagName}${this.stringifyAttributes()}>`;
+        let html = `<${this.tagName}${this.serializeAttributes()}>`;
 
         if (!this.isVoidElement()) {
             html += `${this._textContent ? this._textContent : this.stringifyChildren()}</${this.tagName}>`;
@@ -149,7 +149,7 @@ export default class VElement extends VNode {
      * Returns the elements attributes
      * as a string
      */
-    private stringifyAttributes(): string {
+    private serializeAttributes(): string {
         const attributeMap = new Map<string, string>();
 
         this.attributes.forEach((attributeName: string, attributeValue: string) => {
