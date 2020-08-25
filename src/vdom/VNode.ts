@@ -56,11 +56,20 @@ export default class VNode {
 
     //#region Public Methods
 
+    /**
+     * Appends the given node
+     * to the end of the child nodes
+     * @param node - The node to append
+     */
     appendChild(node: VNode): void {
-        this.setParentNodeToThisNode(node);
+        this.setParentNode(node, this);
         this.childNodes.push(node);
     }
 
+    /**
+     * Removes the given node from the child nodes
+     * @param childNode - The child node to remove
+     */
     removeChild(childNode: VNode): void {
         const index = this.childNodes.indexOf(childNode);
 
@@ -68,10 +77,17 @@ export default class VNode {
             return;
         }
 
+        this.setParentNode(childNode, null);
         this.childNodes.splice(index, 1);
     }
 
-    insertBefore(newNode: VNode, referenceNode: VNode): void {
+    /**
+     * Inserts the new node before the reference node
+     * @param newNode - The new node to insert
+     * @param referenceNode - The optional reference node.
+     * If not provided the element is appended to the end.
+     */
+    insertBefore(newNode: VNode, referenceNode: VNode = null): void {
         if (!referenceNode) {
             return this.appendChild(newNode);
         }
@@ -82,7 +98,7 @@ export default class VNode {
             return;
         }
 
-        this.setParentNodeToThisNode(newNode);
+        this.setParentNode(newNode, this);
         this.childNodes.splice(referenceNodeIndex - 1, 0, newNode);
     }
 
@@ -90,8 +106,14 @@ export default class VNode {
 
     //#region Private Methods
 
-    private setParentNodeToThisNode(node: VNode): void {
-        node.parentNode = this;
+    /**
+     * Sets the parent node of the given node to the
+     * given value.
+     * @param node - The node whose parent node should be set
+     * @param parentNode - The parent node to use
+     */
+    private setParentNode(node: VNode, parentNode: VNode | null): void {
+        node.parentNode = parentNode;
     }
 
     //#endregion
