@@ -40,6 +40,48 @@ export default class VDocument extends VNode {
         return resultHtml;
     }
 
+    /**
+     * Searches an element with the given ID recursively.
+     * If no element can be found, null is returned.
+     * @param id - The ID to search
+     */
+    getElementById(id: string): VElement | null {
+        if (!id) {
+            return null;
+        }
+
+        // local helper function which is executed recursively
+        const searchChildren = (childNodes: Array<VNode>, idToSearch: string): VElement | null => {
+            if (!childNodes || !childNodes.length) {
+                return null;
+            }
+
+            for (let i = 0, iLen = childNodes.length; i < iLen; i++) {
+                const currentNode = childNodes[i];
+
+                if (!(currentNode instanceof VElement)) {
+                    continue;
+                }
+
+                if (currentNode.id === idToSearch) {
+                    return currentNode;
+                }
+
+                const matchingChild = searchChildren(currentNode.childNodes, idToSearch);
+
+                if (matchingChild) {
+                    return matchingChild;
+                }
+            }
+
+            return null;
+        };
+
+        const element = searchChildren(this.childNodes, id);
+
+        return element;
+    }
+
     //#endregion
 
     //#region Private Methods

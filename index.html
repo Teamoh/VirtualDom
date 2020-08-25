@@ -33,10 +33,12 @@
 			doc.appendChild(div);
 	
 			const span = doc.createElement('span');
+			span.id = 'my-span';
 			span.textContent = '123';
 			div.appendChild(span);
 
 			const br = doc.createElement('br');
+			br.id = 'my-br';
 			span.appendChild(br);
 
 			console.log('doc', doc);
