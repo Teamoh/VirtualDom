@@ -1,4 +1,4 @@
-import { isFunction, toString } from '../util/Util';
+import { isFunction, toString, isNullOrUndefined } from '../util/Util';
 import VDataSet from './VDataSet';
 
 export default class AttributeStore {
@@ -54,12 +54,18 @@ export default class AttributeStore {
      * is the new attribute value. The callback function
      * receives the old attribute value as the first
      * and the attribute name as the second parameter.
+     * If the callback returns null or undefined
+     * the attribute will be removed from the element.
      */
     transformAttribute(attributeName: string, callback: (oldValue: string, attributeName: string) => {}): string {
         const oldAttributeValue = this.getAttribute(attributeName);
         const newAttributeValue = callback.call(null, oldAttributeValue, attributeName);
 
-        this.setAttribute(attributeName, newAttributeValue);
+        if (isNullOrUndefined(newAttributeValue)) {
+            this.removeAttribute(attributeName);
+        } else {
+            this.setAttribute(attributeName, newAttributeValue);
+        }
 
         return newAttributeValue;
     }

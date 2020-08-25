@@ -1,5 +1,6 @@
 import ILooseObject from '../common/LooseObject';
 import { isFunction } from '../util/Util';
+import AttributeStore from './AttributeStore';
 
 export default class VDataSet implements ILooseObject {
 

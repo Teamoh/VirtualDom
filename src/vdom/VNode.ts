@@ -102,6 +102,33 @@ export default class VNode {
         this.childNodes.splice(referenceNodeIndex - 1, 0, newNode);
     }
 
+    /**
+     * Returns an array of elements
+     * which have the given class
+     * assigned.
+     * @param className - The class name to search
+     */
+    getElementsByClassName(className: string): Array<VNode> {
+        const elements = [];
+
+        this.childNodes.forEach(node => {
+            // TODO: fix conversion of node to any
+
+            if (!(node as any).classList) {
+                return;
+            }
+
+            if ((node as any).classList.contains(className)) {
+                elements.push(node);
+            }
+
+            const matchingChildNodes = node.getElementsByClassName(className);
+            Array.prototype.push.apply(elements, matchingChildNodes);
+        });
+
+        return elements;
+    }
+
     //#endregion
 
     //#region Private Methods

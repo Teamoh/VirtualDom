@@ -10,6 +10,14 @@ export function isUndefined(x: any) {
     return x === undefined;
 }
 
+export function isNull(x: any) {
+    return x === null;
+}
+
+export function isNullOrUndefined(x: any) {
+    return isNull(x) || isUndefined(x);
+}
+
 export function isFunction(x: any) {
     return typeof x === 'function';
 }

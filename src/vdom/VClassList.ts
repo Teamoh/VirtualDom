@@ -1,4 +1,5 @@
 import { isUndefined, toString } from '../util/Util';
+import AttributeStore from './AttributeStore';
 
 export default class VClassList {
 
@@ -8,11 +9,15 @@ export default class VClassList {
 
     //#region Private Properties
 
-    private classNames = new Set<string>();
+    private attributes: AttributeStore;
 
     //#endregion
 
     //#region Constructor
+
+    constructor(attributes: AttributeStore) {
+        this.attributes = attributes;
+    }
 
     //#endregion
 
@@ -23,7 +28,23 @@ export default class VClassList {
      * @param classNames - The class names to add
      */
     add(...classNames: Array<string>): void {
-        classNames.forEach(className => this.classNames.add(toString(className)));
+        classNames.forEach(className => {
+            if (!className) {
+                return;
+            }
+
+            const trimmedClassName = className.trim();
+
+            if (!trimmedClassName) {
+                return;
+            }
+
+            if (this.contains(trimmedClassName)) {
+                return;
+            }
+
+            this.attributes.transformAttribute('class', (oldValue: string) => oldValue + ' ' + trimmedClassName);
+        });
     }
 
     /**
@@ -31,7 +52,33 @@ export default class VClassList {
      * @param classNames - The class names to remove
      */
     remove(...classNames: Array<string>): void {
-        classNames.forEach(className => this.classNames.delete(toString(className)));
+        classNames.forEach(className => {
+            if (!className) {
+                return;
+            }
+
+            const trimmedClassName = className.trim();
+
+            if (!trimmedClassName) {
+                return;
+            }
+
+            if (!this.contains(trimmedClassName)) {
+                return;
+            }
+
+            this.attributes.transformAttribute('class', (oldValue: string) => {
+                let newValue = ' ' + oldValue + ' ';
+                let index = newValue.indexOf(' ' + trimmedClassName + ' ');
+
+                while (index !== -1) {
+                    newValue = newValue.replace(trimmedClassName, '');
+                    index = newValue.indexOf(' ' + trimmedClassName + ' ');
+                }
+
+                return newValue.trim();
+            });
+        });
     }
 
     /**
@@ -39,7 +86,12 @@ export default class VClassList {
      * @param className -  The class name to check
      */
     contains(className: string): boolean {
-        return this.classNames.has(toString(className));
+        const classNames = this.getTrimmedClassNames();
+
+        const index = (' ' + classNames + ' ').indexOf(' ' + className + ' ');
+        const hasClass = index !== -1;
+
+        return hasClass;
     }
 
     /**
@@ -70,6 +122,16 @@ export default class VClassList {
     //#endregion
 
     //#region Private Methods
+
+    private getTrimmedClassNames() {
+        const classAttr = this.attributes.getAttribute('class');
+
+        if (!classAttr) {
+            return '';
+        }
+
+        return classAttr.trim();
+    }
 
     //#endregion
 

@@ -28,6 +28,7 @@
 			const doc = new VirtualDOM.VDocument();
 			const div = doc.createElement('div');
 
+			div.setAttribute('class', 'section');
 			div.setAttribute('test', '123');
 			div.setAttribute('data-url', 'http://www.google.de');
 			doc.appendChild(div);
