@@ -1,12 +1,10 @@
-import { isFunction, toString, isNullOrUndefined } from '../util/Util';
-import VDataSet from './VDataSet';
+import { isNullOrUndefined, toString } from '../../util/Util';
 
 export default class AttributeStore {
 
     //#region Private Properties
 
-    private attributes = new Map<string, string>();
-    private dataset: VDataSet;
+    private attributes = new Map<string, any>();
 
     //#endregion
 
@@ -76,10 +74,6 @@ export default class AttributeStore {
      * @param callback - The callback function to execute
      */
     forEach(callback: (attributeName: string, attributeValue: string) => void): void {
-        if (!isFunction(callback)) {
-            throw new TypeError('callback must be a function');
-        }
-
         this.attributes.forEach((value: string, key: string) => {
             callback.call(key, key, value);
         });

@@ -1,5 +1,5 @@
-export function toString(x: any) {
-    return x + '';
+export function toString(x: any, defaultValue?: any) {
+    return (!x && !isUndefined(defaultValue)) ? defaultValue : (x + '');
 }
 
 export function isString(x: any) {
@@ -94,4 +94,12 @@ export function unCamelCase(str: string, separator = '-') {
     }
 
     return resultStr;
+}
+
+export function iterableToArray(iterable: any): Array<any> {
+    return [...iterable];
+}
+
+export function toBoolean(x: any) {
+    return !!x;
 }

@@ -1,22 +1,25 @@
-import { isUndefined, toString } from '../util/Util';
-import AttributeStore from './AttributeStore';
+import { isUndefined, iterableToArray } from '../util/Util';
 
 export default class VClassList {
 
     //#region Public Properties
 
+    get length(): number {
+        return this.classNames.size;
+    }
+
     //#endregion
 
     //#region Private Properties
 
-    private attributes: AttributeStore;
+    private classNames: Set<string>;
 
     //#endregion
 
     //#region Constructor
 
-    constructor(attributes: AttributeStore) {
-        this.attributes = attributes;
+    constructor() {
+        this.classNames = new Set<string>();
     }
 
     //#endregion
@@ -39,11 +42,7 @@ export default class VClassList {
                 return;
             }
 
-            if (this.contains(trimmedClassName)) {
-                return;
-            }
-
-            this.attributes.transformAttribute('class', (oldValue: string) => oldValue + ' ' + trimmedClassName);
+            this.classNames.add(className);
         });
     }
 
@@ -63,21 +62,7 @@ export default class VClassList {
                 return;
             }
 
-            if (!this.contains(trimmedClassName)) {
-                return;
-            }
-
-            this.attributes.transformAttribute('class', (oldValue: string) => {
-                let newValue = ' ' + oldValue + ' ';
-                let index = newValue.indexOf(' ' + trimmedClassName + ' ');
-
-                while (index !== -1) {
-                    newValue = newValue.replace(trimmedClassName, '');
-                    index = newValue.indexOf(' ' + trimmedClassName + ' ');
-                }
-
-                return newValue.trim();
-            });
+            this.classNames.delete(className);
         });
     }
 
@@ -86,12 +71,7 @@ export default class VClassList {
      * @param className -  The class name to check
      */
     contains(className: string): boolean {
-        const classNames = this.getTrimmedClassNames();
-
-        const index = (' ' + classNames + ' ').indexOf(' ' + className + ' ');
-        const hasClass = index !== -1;
-
-        return hasClass;
+        return this.classNames.has(className);
     }
 
     /**
@@ -119,19 +99,33 @@ export default class VClassList {
         }
     }
 
+    /**
+     * Removes all classes
+     * in the classlist
+     */
+    clear() {
+        return this.classNames.clear();
+    }
+
+    /**
+     * Returns the stringified classnames
+     * separated by whitespaces
+     */
+    toString(): string {
+        return iterableToArray(this.classNames).join(' ');
+    }
+
+    /**
+     * Checks if the class list
+     * contains any class
+     */
+    any(): boolean {
+        return !!this.length;
+    }
+
     //#endregion
 
     //#region Private Methods
-
-    private getTrimmedClassNames() {
-        const classAttr = this.attributes.getAttribute('class');
-
-        if (!classAttr) {
-            return '';
-        }
-
-        return classAttr.trim();
-    }
 
     //#endregion
 

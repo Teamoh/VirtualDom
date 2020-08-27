@@ -16,3 +16,4 @@ export const voidElementNames = [
 ];
 
 export const dataAttributePrefix = 'data-';
+export const classAttributeName = 'class';
