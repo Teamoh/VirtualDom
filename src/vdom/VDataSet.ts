@@ -11,7 +11,7 @@ export default class VDataSet implements ILooseObject {
      * for each attribute
      * @param callback - The callback function to execute
      */
-    forEach(callback: (attributeName: string, attributeValue: string) => void): void {
+    forEach(callback: (propertyName: string, propertyValue: string) => void): void {
         if (!isFunction(callback)) {
             throw new TypeError('callback must be a function');
         }
@@ -57,6 +57,15 @@ export default class VDataSet implements ILooseObject {
     remove(name: string): void {
         const propertyName = this.createPropertyNameFromAttributeName(name);
         delete this[propertyName];
+    }
+
+    /**
+     * Removes all data attributes
+     */
+    clear(): void {
+        this.forEach(propertyName => {
+            delete this[propertyName];
+        });
     }
 
     //#endregion
