@@ -1,4 +1,4 @@
-import { isUndefined, iterableToArray } from '../util/Util';
+import { isUndefined, iterableToArray, trim } from '../util/Util';
 
 export default class VClassList {
 
@@ -32,11 +32,7 @@ export default class VClassList {
      */
     add(...classNames: Array<string>): void {
         classNames.forEach(className => {
-            if (!className) {
-                return;
-            }
-
-            const trimmedClassName = className.trim();
+            const trimmedClassName = trim(className);
 
             if (!trimmedClassName) {
                 return;
@@ -52,11 +48,7 @@ export default class VClassList {
      */
     remove(...classNames: Array<string>): void {
         classNames.forEach(className => {
-            if (!className) {
-                return;
-            }
-
-            const trimmedClassName = className.trim();
+            const trimmedClassName = trim(className);
 
             if (!trimmedClassName) {
                 return;

@@ -1,10 +1,10 @@
 import { dataAttributePrefix, voidElementNames } from '../config/config';
 import { escapeAttributeValue, unCamelCase } from '../util/Util';
 import AttributeProxy from './attributes/AttributeProxy';
+import VStyle from './styles/VStyle';
 import VClassList from './VClassList';
 import VDataSet from './VDataSet';
 import VNode from './VNode';
-import VStyle from './VStyle';
 import VTextNode from './VTextNode';
 
 export default class VElement extends VNode {

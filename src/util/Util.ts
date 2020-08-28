@@ -103,3 +103,11 @@ export function iterableToArray(iterable: any): Array<any> {
 export function toBoolean(x: any) {
     return !!x;
 }
+
+export function trim(x: string): string {
+    if (!x || !isString(x)) {
+        return '';
+    }
+
+    return x.trim();
+}

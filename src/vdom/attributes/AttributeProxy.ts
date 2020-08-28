@@ -1,5 +1,5 @@
 import { classAttributeName, dataAttributePrefix } from '../../config/config';
-import { isFunction, startsWith, toString } from '../../util/Util';
+import { isFunction, startsWith, toString, trim } from '../../util/Util';
 import VClassList from '../VClassList';
 import VDataSet from '../VDataSet';
 import AttributeStore from './AttributeStore';
@@ -101,11 +101,7 @@ export default class AttributProxy {
      * Normalizes the given attribute name
      */
     private normalizeAttributeName(attributeName: string): string {
-        if (!attributeName) {
-            return '';
-        }
-
-        return attributeName.trim();
+        return trim(attributeName);
     }
 
     private getAttributeType(attributeName: string): AttributeType {

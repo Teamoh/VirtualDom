@@ -4,6 +4,20 @@ import { camelCase, isFunction, startsWith, toString } from '../util/Util';
 
 export default class VDataSet implements ILooseObject {
 
+    //#region Public Properties
+
+    get length(): number {
+        let length = 0;
+
+        this.forEach(() => {
+            length++;
+        });
+
+        return length;
+    }
+
+    //#endregion
+
     //#region Public Methods
 
     /**
@@ -43,7 +57,7 @@ export default class VDataSet implements ILooseObject {
     /**
      * Checks if the given data set
      * property exists
-     * @param name - The name of the propert
+     * @param name - The name of the propery
      */
     has(name: string): boolean {
         const propertyName = this.createPropertyNameFromAttributeName(name);
