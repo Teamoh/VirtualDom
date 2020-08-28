@@ -112,17 +112,47 @@ export default class VNode {
         const elements = [];
 
         this.childNodes.forEach(node => {
-            // TODO: fix conversion of node to any
-
-            if (!(node as any).classList) {
+            if (!(node instanceof VElement)) {
                 return;
             }
 
-            if ((node as any).classList.contains(className)) {
+            if (!(node as VElement).classList) {
+                return;
+            }
+
+            if ((node as VElement).classList.contains(className)) {
                 elements.push(node);
             }
 
             const matchingChildNodes = node.getElementsByClassName(className);
+            Array.prototype.push.apply(elements, matchingChildNodes);
+        });
+
+        return elements;
+    }
+
+    /**
+     * Returns an array of elements
+     * with the given tagName
+     * @param className - The tag name to search
+     */
+    getElementsByTagName(tagName: string): Array<VElement> {
+        const elements = [];
+
+        this.childNodes.forEach(node => {
+            if (!(node instanceof VElement)) {
+                return;
+            }
+
+            if (!(node as VElement).classList) {
+                return;
+            }
+
+            if ((node as VElement).tagName === tagName) {
+                elements.push(node);
+            }
+
+            const matchingChildNodes = node.getElementsByTagName(tagName);
             Array.prototype.push.apply(elements, matchingChildNodes);
         });
 
