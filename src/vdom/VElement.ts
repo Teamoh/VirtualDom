@@ -64,9 +64,9 @@ export default class VElement extends VNode {
 
         this.tagName = tagName;
         this.classList = new VClassList();
-        this.dataset = new VDataSet();
-        this.attributeProxy = new AttributeProxy(this.classList, this.dataset);
         this.style = new VStyle();
+        this.dataset = new VDataSet();
+        this.attributeProxy = new AttributeProxy(this.classList, this.style, this.dataset);
     }
 
     //#endregion

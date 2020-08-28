@@ -102,6 +102,14 @@ export default class VStyle implements ILooseObject {
     }
 
     /**
+     * Checks if any style
+     * property is set
+     */
+    any(): boolean {
+        return !!this.length;
+    }
+
+    /**
      * Serializes the css properties
      */
     toString(): string {
@@ -112,7 +120,7 @@ export default class VStyle implements ILooseObject {
             properties.push(`${unCamelCasedPropertyName}: ${propertyValue}`);
         });
 
-        return properties.join('; ');
+        return properties.join('; ') + (properties.length ? ';' : '');
     }
 
     //#endregion

@@ -1,5 +1,6 @@
-import { classAttributeName, dataAttributePrefix } from '../../config/config';
+import { classAttributeName, dataAttributePrefix, styleAttributeName } from '../../config/config';
 import { isFunction, startsWith, toString, trim } from '../../util/Util';
+import VStyle from '../styles/VStyle';
 import VClassList from '../VClassList';
 import VDataSet from '../VDataSet';
 import AttributeStore from './AttributeStore';
@@ -10,6 +11,7 @@ export default class AttributProxy {
     //#region Private Properties
 
     private classList: VClassList;
+    private style: VStyle;
     private dataset: VDataSet;
     private attributeStore: AttributeStore;
 
@@ -17,8 +19,9 @@ export default class AttributProxy {
 
     //#region Constructor
 
-    constructor(classList: VClassList, dataset: VDataSet) {
+    constructor(classList: VClassList, style: VStyle, dataset: VDataSet) {
         this.classList = classList;
+        this.style = style;
         this.dataset = dataset;
         this.attributeStore = new AttributeStore();
     }
@@ -89,6 +92,10 @@ export default class AttributProxy {
             callback.call(classAttributeName, classAttributeName, this.classList.toString());
         }
 
+        if (this.style.any()) {
+            callback.call(styleAttributeName, styleAttributeName, this.style.toString());
+        }
+
         this.attributeStore.forEach(callback);
         this.dataset.forEach(callback);
     }
@@ -107,6 +114,8 @@ export default class AttributProxy {
     private getAttributeType(attributeName: string): AttributeType {
         if (attributeName === classAttributeName) {
             return AttributeType.Class;
+        } else if (attributeName === styleAttributeName) {
+            return AttributeType.Style;
         } else if (startsWith(attributeName, dataAttributePrefix)) {
             return AttributeType.Data;
         } else {
@@ -125,6 +134,10 @@ export default class AttributProxy {
             case AttributeType.Class:
                 // set a class
                 this.classList.add(attributeValue);
+                break;
+            case AttributeType.Style:
+                // set style attribute
+                this.style.set(attributeName, attributeValue);
                 break;
             case AttributeType.Data:
                 // set a data attribute
@@ -146,6 +159,9 @@ export default class AttributProxy {
             case AttributeType.Class:
                 // get class attribute
                 return this.classList.toString();
+            case AttributeType.Style:
+                // get style attribute
+                return this.style.get(attributeName);
             case AttributeType.Data:
                 // get a data attribute
                 return this.dataset.get(attributeName);
@@ -163,13 +179,16 @@ export default class AttributProxy {
     private hasAttributeByType(attributeType: AttributeType, attributeName: string): boolean {
         switch (attributeType) {
             case AttributeType.Class:
-                // get class attribute
+                // has class attribute
                 return this.classList.any();
+            case AttributeType.Style:
+                // has style attribute
+                return this.style.any();
             case AttributeType.Data:
-                // get a data attribute
+                // has a data attribute
                 return this.dataset.has(attributeName);
             default:
-                // get a standard attribute
+                // has a standard attribute
                 return this.attributeStore.hasAttribute(attributeName);
         }
     }
@@ -184,9 +203,15 @@ export default class AttributProxy {
             case AttributeType.Class:
                 // remove class attribute
                 this.classList.clear();
+                break;
+            case AttributeType.Style:
+                // has style attribute
+                this.style.clear();
+                break;
             case AttributeType.Data:
                 // remove data attribute
                 this.dataset.remove(attributeName);
+                break;
             default:
                 // remove standard attribute
                 this.attributeStore.removeAttribute(attributeName);

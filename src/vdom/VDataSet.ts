@@ -82,6 +82,14 @@ export default class VDataSet implements ILooseObject {
         });
     }
 
+    /**
+     * Checks if any data
+     * property is set
+     */
+    any(): boolean {
+        return !!this.length;
+    }
+
     //#endregion
 
     //#region Private Methods
