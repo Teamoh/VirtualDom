@@ -1,6 +1,5 @@
-import { endsWith } from './util/Util';
-import VDocument from './vdom/VDocument';
+import VRoot from './vdom/VRoot';
 
 (window as any).VirtualDOM = {
-    VDocument,
+    VRoot,
 };

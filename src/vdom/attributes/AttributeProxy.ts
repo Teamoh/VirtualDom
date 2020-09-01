@@ -1,5 +1,5 @@
 import { classAttributeName, dataAttributePrefix, styleAttributeName } from '../../config/config';
-import { isFunction, startsWith, toString, trim } from '../../util/Util';
+import { isFunction, startsWith, toString, trim, unCamelCase } from '../../util/Util';
 import VStyle from '../styles/VStyle';
 import VClassList from '../VClassList';
 import VDataSet from '../VDataSet';
@@ -97,7 +97,12 @@ export default class AttributProxy {
         }
 
         this.attributeStore.forEach(callback);
-        this.dataset.forEach(callback);
+
+        this.dataset.forEach((propertyName: string, propertyValue: string) => {
+            const unCamelCasedPropertyName = unCamelCase(propertyName);
+            const dataAttributeName = dataAttributePrefix + unCamelCasedPropertyName;
+            callback.call(dataAttributeName, dataAttributeName, toString(propertyValue));
+        });
     }
 
     //#region

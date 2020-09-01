@@ -1,8 +1,9 @@
 import { isString } from '../util/Util';
 import VElement from './VElement';
 import VNode from './VNode';
+import VTextNode from './VTextNode';
 
-export default class VDocument extends VNode {
+export default class VRoot extends VNode {
 
     //#region Public Properties
 
@@ -80,6 +81,24 @@ export default class VDocument extends VNode {
         const element = searchChildren(this.childNodes, id);
 
         return element;
+    }
+
+    /**
+     * Converts the VRoot to
+     * a document fragment
+     */
+    toDocumentFragment(): DocumentFragment {
+        if (!document) {
+            throw new ReferenceError('Method toDocumentFragment requires a browser environment');
+        }
+
+        const documentFragment = document.createDocumentFragment();
+
+        this.childNodes.forEach(childNode => {
+            documentFragment.appendChild((childNode as (VElement | VTextNode)).toNode());
+        });
+
+        return documentFragment;
     }
 
     //#endregion

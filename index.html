@@ -25,33 +25,36 @@
 	<script src="src/virtualdom.js"></script>
 	<script>
 		(function () {
-			const doc = new VirtualDOM.VDocument();
-			const div = doc.createElement('div');
+			const root = new VirtualDOM.VRoot();
+			const div = root.createElement('div');
 
 			div.setAttribute('class', 'test');
 			div.setAttribute('testattr', '123');
 			div.setAttribute('data-url', 'http://www.google.de');
-			doc.appendChild(div);
+			root.appendChild(div);
 	
-			const span = doc.createElement('span');
+			const span = root.createElement('span');
 			span.id = 'my-span';
 			span.textContent = '123';
 			div.appendChild(span);
 
-			const br = doc.createElement('br');
+			const br = root.createElement('br');
 			br.id = 'my-br';
 			br.classList.add('test');
 			span.appendChild(br);
 
-			console.log('doc', doc);
+			console.log('root', root);
 			console.log('div', div);
 			console.log('span', span);
 			console.log('br', br);
-			console.log(doc.toString());
+			console.log(root.toString());
 
-			window.doc = doc;
+			
+			window.root = root;
 			window.div = div;
 			window.span = span;
+
+			document.body.insertBefore(root.toDocumentFragment(), document.body.firstChild);
 		})();
 	</script>
 </body>	

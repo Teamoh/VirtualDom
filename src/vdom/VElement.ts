@@ -130,6 +130,30 @@ export default class VElement extends VNode {
         return voidElementNames.indexOf(this.tagName) !== -1;
     }
 
+    /**
+     * Converts the virtual element
+     * to an actual HTMLElement
+     */
+    toNode(): HTMLElement {
+        if (!document) {
+            throw new ReferenceError('Method toNode requires a browser environment');
+        }
+
+        const element = document.createElement(this.tagName);
+
+        // set elements attributes
+        this.attributeProxy.forEach((attributeName: string, attributeValue: string) => {
+            element.setAttribute(attributeName, attributeValue);
+        });
+
+        // append child elements
+        this.childNodes.forEach(childNode => {
+            element.appendChild((childNode as (VElement | VTextNode)).toNode());
+        });
+
+        return element;
+    }
+
     //#endregion
 
     //#region Private Methods
@@ -143,20 +167,6 @@ export default class VElement extends VNode {
 
         this.attributeProxy.forEach((attributeName: string, attributeValue: string) => {
             attributeMap.set(attributeName, attributeValue);
-        });
-
-        /**
-         * Override the normal attributes with the data attributes.
-         * Because the data attributes are stored within a loose object
-         * they should take priority over the normal attributes
-         * which are controlled by methods which will always synchronize
-         * the dataset.
-         */
-        this.dataset.forEach((dataAttributeName: string, dataAttributeValue: string) => {
-            // un-camelcase the property name
-            const unCamelCasedName = unCamelCase(dataAttributeName);
-            const prefixedName = dataAttributePrefix + unCamelCasedName;
-            attributeMap.set(prefixedName, dataAttributeValue);
         });
 
         const attributesList = [];
