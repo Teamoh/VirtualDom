@@ -1,11 +1,13 @@
-import { dataAttributePrefix, voidElementNames } from '../config/config';
-import { escapeAttributeValue, unCamelCase } from '../util/Util';
-import AttributeProxy from './attributes/AttributeProxy';
-import VStyle from './styles/VStyle';
-import VClassList from './VClassList';
-import VDataSet from './VDataSet';
-import VNode from './VNode';
-import VTextNode from './VTextNode';
+import { dataAttributePrefix, voidElementNames } from '../../config/config';
+import { escapeAttributeValue, unCamelCase } from '../../util/Util';
+import AttributeProxy from '../attributes/AttributeProxy';
+import VStyle from '../styles/VStyle';
+import VClassList from '../VClassList';
+import VDataSet from '../VDataSet';
+import VNode from '../VNode';
+import VTextNode from '../VTextNode';
+import ElementComparison from './ElementComparisonResult';
+import ElementComparisonResult from './ElementComparisonResult';
 
 export default class VElement extends VNode {
 
@@ -152,6 +154,48 @@ export default class VElement extends VNode {
         });
 
         return element;
+    }
+
+    /**
+     * Compares the virtual element
+     * with a given html element
+     * and returns an ElementComparisonResult
+     * @param element - The HTML element
+     */
+    compare(element: HTMLElement): ElementComparisonResult {
+        if (!element) {
+            return null;
+        }
+
+        const comparisonResult = new ElementComparisonResult();
+
+        // iterate over the virtual attributes
+        // to get the added and changed attributes
+        this.attributeProxy.forEach((attributeName: string, attributeValue: string) => {
+            if (!element.hasAttribute(attributeName)) {
+                comparisonResult.addedAttributes.add(attributeName);
+                return;
+            }
+
+            const domAttributeValue = element.getAttribute(attributeName);
+            const isSameValue = domAttributeValue === attributeValue;
+
+            if (!isSameValue) {
+                comparisonResult.changedAttributes.add(attributeName);
+            }
+        });
+
+        // iterate over the DOM attributes
+        // to get the removed attributes
+        for (let i = 0, iLen = element.attributes.length; i < iLen; i++) {
+            const currentAttributeName = element.attributes[i].name;
+
+            if (!this.hasAttribute(currentAttributeName)) {
+                comparisonResult.removedAttributes.add(currentAttributeName);
+            }
+        }
+
+        return comparisonResult;
     }
 
     //#endregion

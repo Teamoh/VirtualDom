@@ -1,4 +1,4 @@
-import VElement from './VElement';
+import VElement from './elements/VElement';
 
 export default class VNode {
 

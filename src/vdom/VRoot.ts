@@ -1,5 +1,5 @@
 import { isString } from '../util/Util';
-import VElement from './VElement';
+import VElement from './elements/VElement';
 import VNode from './VNode';
 import VTextNode from './VTextNode';
 
