@@ -1,4 +1,4 @@
-import { isString, isFunction } from '../util/Util';
+import { isFunction, isString } from '../util/Util';
 import VElement from './elements/VElement';
 import VNode from './VNode';
 import VTextNode from './VTextNode';
