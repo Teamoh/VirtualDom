@@ -38,6 +38,9 @@ export default class VTextNode extends VNode {
         }
 
         const textNode = document.createTextNode(this.text);
+
+        (textNode as any)._vid = this._vid;
+
         return textNode;
     }
 

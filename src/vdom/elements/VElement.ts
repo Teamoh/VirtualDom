@@ -153,6 +153,9 @@ export default class VElement extends VNode {
             element.appendChild((childNode as (VElement | VTextNode)).toNode());
         });
 
+        // set _vid so the node can be identified
+        (element as any)._vid = this._vid;
+
         return element;
     }
 
