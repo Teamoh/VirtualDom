@@ -1,3 +1,4 @@
+import NodeComparisonResult from './NodeComparisonResult';
 import VNode from './VNode';
 
 export default class VTextNode extends VNode {
@@ -42,6 +43,20 @@ export default class VTextNode extends VNode {
         (textNode as any)._vid = this._vid;
 
         return textNode;
+    }
+
+    /**
+     * Compares the DOM text node
+     * with the virtual ndoe
+     * @param textNode - The text node
+     * to compare
+     */
+    compare(textNode: Text): NodeComparisonResult {
+        if (this.text !== textNode.textContent) {
+            return new NodeComparisonResult(true);
+        }
+
+        return new NodeComparisonResult();
     }
 
     //#endregion

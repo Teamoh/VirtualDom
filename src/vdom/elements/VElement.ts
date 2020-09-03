@@ -1,13 +1,12 @@
-import { dataAttributePrefix, voidElementNames } from '../../config/config';
-import { escapeAttributeValue, unCamelCase } from '../../util/Util';
+import { voidElementNames } from '../../config/config';
+import { escapeAttributeValue } from '../../util/Util';
 import AttributeProxy from '../attributes/AttributeProxy';
+import NodeComparisonResult from '../NodeComparisonResult';
 import VStyle from '../styles/VStyle';
 import VClassList from '../VClassList';
 import VDataSet from '../VDataSet';
 import VNode from '../VNode';
 import VTextNode from '../VTextNode';
-import ElementComparison from './ElementComparisonResult';
-import ElementComparisonResult from './ElementComparisonResult';
 
 export default class VElement extends VNode {
 
@@ -150,7 +149,7 @@ export default class VElement extends VNode {
 
         // append child elements
         this.childNodes.forEach(childNode => {
-            element.appendChild((childNode as (VElement | VTextNode)).toNode());
+            element.appendChild((childNode as (VElement | VTextNode)).toNode());
         });
 
         // set _vid so the node can be identified
@@ -165,38 +164,15 @@ export default class VElement extends VNode {
      * and returns an ElementComparisonResult
      * @param element - The HTML element
      */
-    compare(element: HTMLElement): ElementComparisonResult {
+    compare(element: HTMLElement): NodeComparisonResult {
         if (!element) {
             return null;
         }
 
-        const comparisonResult = new ElementComparisonResult();
+        const comparisonResult = new NodeComparisonResult();
 
-        // iterate over the virtual attributes
-        // to get the added and changed attributes
-        this.attributeProxy.forEach((attributeName: string, attributeValue: string) => {
-            if (!element.hasAttribute(attributeName)) {
-                comparisonResult.addedAttributes.add(attributeName);
-                return;
-            }
-
-            const domAttributeValue = element.getAttribute(attributeName);
-            const isSameValue = domAttributeValue === attributeValue;
-
-            if (!isSameValue) {
-                comparisonResult.changedAttributes.add(attributeName);
-            }
-        });
-
-        // iterate over the DOM attributes
-        // to get the removed attributes
-        for (let i = 0, iLen = element.attributes.length; i < iLen; i++) {
-            const currentAttributeName = element.attributes[i].name;
-
-            if (!this.hasAttribute(currentAttributeName)) {
-                comparisonResult.removedAttributes.add(currentAttributeName);
-            }
-        }
+        this.compareAttributes(element, comparisonResult);
+        this.compareChildNodes(element, comparisonResult);
 
         return comparisonResult;
     }
@@ -238,6 +214,80 @@ export default class VElement extends VNode {
         });
 
         return stringifiedChildren.join('');
+    }
+
+    /**
+     * Compares the elements
+     * attributes with the given HTMLElement
+     * and fills the comparison result
+     * @param element - The HTMLElement
+     * @param comparisonResult - The comparison result
+     */
+    private compareAttributes(element: HTMLElement, comparisonResult: NodeComparisonResult) {
+        // iterate over the virtual attributes
+        // to get the added and changed attributes
+        this.attributeProxy.forEach((attributeName: string, attributeValue: string) => {
+            if (!element.hasAttribute(attributeName)) {
+                comparisonResult.addedAttributes.add(attributeName);
+                return;
+            }
+
+            const domAttributeValue = element.getAttribute(attributeName);
+            const isSameValue = domAttributeValue === attributeValue;
+
+            if (!isSameValue) {
+                comparisonResult.changedAttributes.add(attributeName);
+            }
+        });
+
+        // iterate over the DOM attributes
+        // to get the removed attributes
+        for (let i = 0, iLen = element.attributes.length; i < iLen; i++) {
+            const currentAttributeName = element.attributes[i].name;
+
+            if (!this.hasAttribute(currentAttributeName)) {
+                comparisonResult.removedAttributes.add(currentAttributeName);
+            }
+        }
+    }
+
+    /**
+     * Compares the elements
+     * child nodes with the given HTMLElement
+     * and fills the comparison result
+     * @param element - The HTMLElement
+     * @param comparisonResult - The comparison result
+     */
+    private compareChildNodes(element: HTMLElement, comparisonResult: NodeComparisonResult) {
+        const htmlElementChildNodeVIds: Array<string> = [];
+        const vElementChildNodeVIds: Array<string> = [];
+
+        element.childNodes.forEach(childNode => {
+            htmlElementChildNodeVIds.push((childNode as any)._vid);
+        });
+
+        this.childNodes.forEach(childNode => {
+            const vId = childNode._vid;
+
+            vElementChildNodeVIds.push(vId);
+
+            // Check if the vId is already a childNode of the HTMLElement.
+            // If not, the node is new in the virtual DOM.
+
+            if (htmlElementChildNodeVIds.indexOf(vId) === -1) {
+                comparisonResult.addedChildNodes.add(vId);
+            }
+        });
+
+        htmlElementChildNodeVIds.forEach(vId => {
+            // check if the HTMLElement has a child node
+            // which is not available in the virtual DOM.
+            // If so, this node was removed in the virtual DOM.
+
+            if (vElementChildNodeVIds.indexOf(vId) === -1) {
+                comparisonResult.removedChildNodes.add(vId);
+            }
+        });
     }
 
     //#endregion
