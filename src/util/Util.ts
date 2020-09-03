@@ -22,6 +22,10 @@ export function isFunction(x: any) {
     return typeof x === 'function';
 }
 
+export function isArray(x: any) {
+    return Object.prototype.toString.call(x) === '[object Array]';
+}
+
 export function escapeAttributeValue(attributeValue: string) {
     return attributeValue.replace(/"/g, '&quot;');
 }
@@ -111,3 +115,31 @@ export function trim(x: string): string {
 
     return x.trim();
 }
+
+export const generateId = (() => {
+    const ids = new Set();
+    const defaultCharset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIKLMNOPQRSTUVWXYZ0123456789';
+
+    function generate(len: number, charset: string) {
+        let id = '';
+
+        for (let i = 0; i < len; i++) {
+            id += charset[Math.floor(Math.random() * charset.length)];
+        }
+
+        return id;
+    }
+
+    return (len: number, charset?: string) => {
+        len = len || 20;
+
+        let id: string;
+
+        do {
+            id = generate(len, charset || defaultCharset);
+        } while (ids.has(id));
+
+        ids.add(id);
+        return id;
+    };
+})();

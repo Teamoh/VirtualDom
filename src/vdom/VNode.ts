@@ -1,9 +1,11 @@
+import { generateId } from '../util/Util';
 import VElement from './elements/VElement';
 
 export default class VNode {
 
     //#region Public Properties
 
+    _vid: string;
     parentNode: VNode;
     childNodes: Array<VNode>;
 
@@ -48,6 +50,7 @@ export default class VNode {
     //#region Constructor
 
     constructor() {
+        this._vid = generateId(16);
         this.parentNode = null;
         this.childNodes = [];
     }
