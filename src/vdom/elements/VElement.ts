@@ -7,6 +7,7 @@ import VClassList from '../VClassList';
 import VDataSet from '../VDataSet';
 import VNode from '../VNode';
 import VTextNode from '../VTextNode';
+import { elementRegistry } from './ElementRegistry';
 
 export default class VElement extends VNode {
 
@@ -55,6 +56,7 @@ export default class VElement extends VNode {
 
     private attributeProxy: AttributeProxy;
     private _textContent: string;
+    // private instances: Array<HTMLElement>;
 
     //#endregion
 
@@ -68,6 +70,7 @@ export default class VElement extends VNode {
         this.style = new VStyle();
         this.dataset = new VDataSet();
         this.attributeProxy = new AttributeProxy(this.classList, this.style, this.dataset);
+        // this.instances = [];
     }
 
     //#endregion
@@ -155,6 +158,12 @@ export default class VElement extends VNode {
         // set _vid so the node can be identified
         (element as any)._vid = this._vid;
 
+        // store the element in the element registry
+        elementRegistry.register(this._vid, element);
+
+        // store the create element as an instance of the virtual element
+        // this.instances.push(element);
+
         return element;
     }
 
@@ -180,17 +189,52 @@ export default class VElement extends VNode {
     patch(element: HTMLElement): void {
         const comparisonResult = this.compare(element);
 
+        // patch added attributes
         comparisonResult.addedAttributes.forEach((addedAttribute: string) => {
             element.setAttribute(addedAttribute, this.getAttribute(addedAttribute));
         });
 
+        // patch changed attributes
         comparisonResult.changedAttributes.forEach((changedAttribute: string) => {
             element.setAttribute(changedAttribute, this.getAttribute(changedAttribute));
         });
 
+        // patch removed attributes
         comparisonResult.removedAttributes.forEach((removedAttribute: string) => {
             element.removeAttribute(removedAttribute);
         });
+
+        // patch child nodes
+        for (let i = 0; i < element.childNodes.length; i++) {
+            const currentChildNode = element.childNodes[i];
+
+            if (!this.childNodes[i]) {
+                // there is no node at the current index
+                // in the virtual DOM so remove the element
+                // in the real DOM
+                currentChildNode.parentNode.removeChild(currentChildNode);
+                i--;
+                continue;
+            }
+
+            const currentChildNodeVId = (currentChildNode as any)._vid;
+
+            if (currentChildNodeVId === this.childNodes[i]._vid) {
+                // current DOM node and vDOM node match
+                // so keep it as it is
+                continue;
+            }
+
+            // at this point the elements position
+            // is not matching the position in the vDOM
+            // so the element is removed from the DOM
+
+            // TODO: remove element form DOM
+
+            const instance = elementRegistry.getElement(currentChildNodeVId);
+
+            // TODO update element order
+        }
     }
 
     //#endregion
@@ -304,6 +348,23 @@ export default class VElement extends VNode {
                 comparisonResult.removedChildNodes.add(vId);
             }
         });
+    }
+
+    /**
+     * Finds a instance of the virtual element
+     * by the given vId
+     * @param vId - The vId
+     */
+    private getInstanceByVId(vId: string): HTMLElement | null {
+        for (let i = 0, iLen = this.instances.length; i < iLen; i++) {
+            const instance = this.instances[i];
+
+            if ((instance as any)._vid) {
+                return instance;
+            }
+        }
+
+        return null;
     }
 
     //#endregion
