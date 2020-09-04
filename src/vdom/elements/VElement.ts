@@ -350,22 +350,5 @@ export default class VElement extends VNode {
         });
     }
 
-    /**
-     * Finds a instance of the virtual element
-     * by the given vId
-     * @param vId - The vId
-     */
-    private getInstanceByVId(vId: string): HTMLElement | null {
-        for (let i = 0, iLen = this.instances.length; i < iLen; i++) {
-            const instance = this.instances[i];
-
-            if ((instance as any)._vid) {
-                return instance;
-            }
-        }
-
-        return null;
-    }
-
     //#endregion
 }
