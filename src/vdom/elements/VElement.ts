@@ -177,6 +177,22 @@ export default class VElement extends VNode {
         return comparisonResult;
     }
 
+    patch(element: HTMLElement): void {
+        const comparisonResult = this.compare(element);
+
+        comparisonResult.addedAttributes.forEach((addedAttribute: string) => {
+            element.setAttribute(addedAttribute, this.getAttribute(addedAttribute));
+        });
+
+        comparisonResult.changedAttributes.forEach((changedAttribute: string) => {
+            element.setAttribute(changedAttribute, this.getAttribute(changedAttribute));
+        });
+
+        comparisonResult.removedAttributes.forEach((removedAttribute: string) => {
+            element.removeAttribute(removedAttribute);
+        });
+    }
+
     //#endregion
 
     //#region Private Methods
